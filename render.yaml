@@ -14,4 +14,4 @@ services:
       - key: DATABASE_PATH
         value: ./data/linkplease.db
       - key: REQUIRE_WEBHOOK_SIGNATURE
-        value: "true"
+        value: "false"
