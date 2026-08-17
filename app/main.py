@@ -42,9 +42,6 @@ async def webhook(request: Request):
     if service.settings.require_webhook_signature:
         if not service.verify_signature(raw, signature):
             raise HTTPException(status_code=401, detail="invalid webhook signature")
-    elif signature:
-        if not service.verify_signature(raw, signature):
-            raise HTTPException(status_code=401, detail="invalid webhook signature")
     try:
         event=await request.json()
     except Exception:
