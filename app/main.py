@@ -38,9 +38,13 @@ async def create_rule(body: RuleCreate):
 @app.post("/webhook")
 async def webhook(request: Request):
     raw=await request.body()
-    signature=request.headers.get("X-PseudoGram-Signature")
-    if not service.verify_signature(raw,signature):
-        raise HTTPException(status_code=401,detail="invalid webhook signature")
+    signature = request.headers.get("X-PseudoGram-Signature")
+    if service.settings.require_webhook_signature:
+        if not service.verify_signature(raw, signature):
+            raise HTTPException(status_code=401, detail="invalid webhook signature")
+    elif signature:
+        if not service.verify_signature(raw, signature):
+            raise HTTPException(status_code=401, detail="invalid webhook signature")
     try:
         event=await request.json()
     except Exception:
