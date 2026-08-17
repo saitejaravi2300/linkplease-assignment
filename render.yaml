@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: linkplease-automation
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PSEUDOGRAM_BASE_URL
+        value: https://pseudogram-api.onrender.com
+      - key: PSEUDOGRAM_API_KEY
+        sync: false
+      - key: DATABASE_PATH
+        value: ./data/linkplease.db
+      - key: REQUIRE_WEBHOOK_SIGNATURE
+        value: "true"
